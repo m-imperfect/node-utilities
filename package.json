@@ -1,0 +1,13 @@
+{
+  "name": "@m-imperfect/node-utils",
+  "version": "1.0.0",
+  "author": "m-imperfect <owner@m-imperfect.net>",
+  "license": "ISC",
+  "main": "lib",
+  "devDependencies": {
+    "@types/node": "^20.1.0"
+  },
+  "scripts": {
+    "lint": "tsc"
+  }
+}
