@@ -32,7 +32,7 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
   if (validated.includes(value)) return
   if (Array.isArray(validator)) {
     if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
-    validator.forEach((subvalidator, index) => validate(value[index], subvalidator, [...trace, `at[${index}]`], validated))
+    validator.forEach((subvalidator, index) => validate(value[index], subvalidator, [...trace, `at(${index})`], validated))
   } else if (isDictionary(validator)) {
     if (!isDictionary(value)) throw new ValidationError(trace, { comparison: 'dictionary' })
     let validatorKeys = Object.keys(validator)
@@ -67,7 +67,7 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
           let subtype = type.substring(0, type.length-2)
           validated.push(value)
           if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
-          value.forEach((subvalue, index) => validate(subvalue, subtype, [...trace, `at[${index}]`], validated))
+          value.forEach((subvalue, index) => validate(subvalue, subtype, [...trace, `at(${index})`], validated))
           return
         }
         
