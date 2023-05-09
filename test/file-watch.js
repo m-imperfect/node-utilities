@@ -1,0 +1,6 @@
+const FileWatcher = require("../lib/file-watcher")
+new FileWatcher('./logs/errors.log')
+.on('update', console.log)
+.on('warning', console.warn)
+.on('error', console.error)
+.watch()
