@@ -28,8 +28,8 @@ let validators: { [key: string]: any } = {}
 export let defineValidator = (key: string, validator: any) => validators[key] = validator
 
 export function validate(value: any, validator: any, trace:string|string[] = 'origin', validated: any[] = []) {
-  if (!Array.isArray(trace)) trace = [trace]
   if (validated.includes(value)) return
+  if (!Array.isArray(trace)) trace = [trace]
   if (Array.isArray(validator)) {
     if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
     validator.forEach((subvalidator, index) => validate(value[index], subvalidator, [...trace, `at(${index})`], validated))
