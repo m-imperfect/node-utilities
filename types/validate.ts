@@ -98,9 +98,9 @@ export default function validate(value: any, validator: any, trace:string[] = ['
   }
 }
 
-export function isValid(value: any, validator: any, trace?: string[]) {
+export function isValid(value: any, validator: any) {
   try {
-    validate(value, validator, trace)
+    validate(value, validator)
     return true
   } catch {
     return false
