@@ -31,6 +31,7 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
   if (!Array.isArray(trace)) trace = [trace]
   if (validated.includes(value)) return
   if (Array.isArray(validator)) {
+    if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
     validator.forEach((subvalidator, index) => validate(value[index], subvalidator, [...trace, `at[${index}]`], validated))
   } else if (isDictionary(validator)) {
     if (!isDictionary(value)) throw new ValidationError(trace, { comparison: 'dictionary' })
