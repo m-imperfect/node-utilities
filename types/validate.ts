@@ -3,7 +3,7 @@ let isText = (value: any): boolean => isType(value, 'string') && value.length > 
 let isDictionary = (value: any): boolean => isType(value, 'object') && value != null && !Array.isArray(value)
 let toString = (value: any, _default: any): string => { try { return `${value}` } catch { return _default } }
 
-class ValidationError extends Error {
+export class ValidationError extends Error {
   trace: string[]
   code: string
   comparison?: string
