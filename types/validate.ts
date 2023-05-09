@@ -62,14 +62,6 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
           validate(value, validators[type], trace, validated)
           return
         }
-
-        if (type.endsWith('[]')) {
-          let subtype = type.substring(0, type.length-2)
-          validated.push(value)
-          if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
-          value.forEach((subvalue, index) => validate(subvalue, subtype, [...trace, `at(${index})`], validated))
-          return
-        }
         
         let subtypes = type.split('|').map(subtype => subtype.trim())
         if (subtypes.length > 1) {
@@ -82,19 +74,20 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
           }
         }
 
-        if (type.startsWith('{') && type.endsWith('}')) {
-          let sides = type.substring(1, type.length-1).split(':').map(side => side.trim())
-          let [keysType, valuesType] = sides
-          if (sides.length == 2 && sides.every(side => side.length > 0)) {
-            if (!isDictionary(value)) throw new ValidationError(trace, { comparison: 'dictionary' })
-            validated.push(value)
-            Object.keys(value).forEach(key => {
-              let stringKey = toString(key, '[Anonymous Key]')
-              validate(key, keysType, [...trace, stringKey], validated)
-              validate(value[key], valuesType, [...trace, stringKey + ':value'], validated)
-            })
-            return
-          }
+        if (type.endsWith('[]')) {
+          let subtype = type.substring(0, type.length-2)
+          if (!Array.isArray(value)) throw new ValidationError(trace, { comparison: 'array' })
+          validated.push(value)
+          value.forEach((subvalue, index) => validate(subvalue, subtype, [...trace, `at(${index})`], validated))
+          return
+        }
+
+        if (type.endsWith('{}')) {
+          let subtype = type.substring(0, type.length-2)
+          if (!isDictionary(value)) throw new ValidationError(trace, { comparison: 'dictionary' })
+          validated.push(value)
+          Object.keys(value).forEach(key => validate(value[key], subtype, [...trace, toString(key, '[Anonymous Key]')], validated))
+          return
         }
 
         if (isType(value, validator)) return
