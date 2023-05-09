@@ -27,7 +27,7 @@ class ValidationError extends Error {
 let validators: { [key: string]: any } = {}
 export let defineValidator = (key: string, validator: any) => validators[key] = validator
 
-export default function validate(value: any, validator: any, trace:string[] = ['origin'], validated: any[] = []) {
+export function validate(value: any, validator: any, trace:string[] = ['origin'], validated: any[] = []) {
   if (validated.includes(value)) return
   if (Array.isArray(validator)) {
     validator.forEach((subvalidator, index) => validate(value[index], subvalidator, [...trace, `at[${index}]`], validated))
