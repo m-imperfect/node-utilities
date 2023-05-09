@@ -43,10 +43,10 @@ export function validate(value: any, validator: any, trace:string|string[] = 'or
     switch(validator) {
       case 'any': return
       case 'text':
-        if (!isText(value)) return
+        if (isText(value)) return
         break
       case 'realNumber':
-        if (!(isType(value, 'number') && !Number.isNaN(value))) return
+        if (isType(value, 'number') && !Number.isNaN(value)) return
         break
       default: 
         let type: string = validator
