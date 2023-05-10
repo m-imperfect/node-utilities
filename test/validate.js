@@ -1,4 +1,4 @@
-const { validate, isValid, ValidationError, defineValidator } = require('../lib/validate');
+const { validate, isValid, ValidationError, define: defineValidator } = require('../lib/validate');
 
 function logIfValidationError(err) {
   if (err instanceof ValidationError) {

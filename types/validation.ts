@@ -25,7 +25,7 @@ export class ValidationError extends Error {
 }
 
 let validators: { [key: string]: any } = {}
-export let defineValidator = (key: string, validator: any) => validators[key] = validator
+export let define = (key: string, validator: any) => validators[key] = validator
 
 export function validate(value: any, validator: any, trace:string|string[] = 'origin', validated: any[] = []) {
   if (validated.includes(value)) return
