@@ -1,11 +1,11 @@
-# Imperfect's Node Utils
+# Node Utilities
 Some useful functions to use in [NodeJS](https://nodejs.org/).
 
 ## Args Module
 Deals with the executed command line that launched the application.  
-example to load the module:
+example to load the module in commonjs:
 ```js
-const args = require('@m-imperfect/node-utils/lib/args');
+const args = require('@m-imperfect/node-utilities/lib/args');
 ```
 
 ### Following Arg Method
@@ -17,9 +17,9 @@ args.following('-port');
 
 ## Log Module
 Deals with outputs printing either in console, in a file or anywhere else.  
-example to load the module:
+example to load the module in commonjs:
 ```js
-const Log = require('@m-imperfect/node-utils/lib/log');
+const Log = require('@m-imperfect/node-utilities/lib/log');
 ```
 
 ### Log Writer
@@ -83,9 +83,9 @@ pastepinLoggger("My random text to be sent.");
 
 ## Validation Module
 Deals with the values and their types.  
-example to load the module:
+example to load the module in commonjs:
 ```js
-const validation = require('@m-imperfect/node-utils/lib/validation');
+const validation = require('@m-imperfect/node-utilities/lib/validation');
 ```
 
 ### Validate Method
