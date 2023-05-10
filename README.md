@@ -31,7 +31,11 @@ const formurlencoded = (...args) => import('form-urlencoded').then(({default: fo
 function createPastepinWriter(apiKey, success, errorsHandler) {
   return async function pastebinWriter(message) {
     try {
-      const content = await formurlencoded({ api_dev_key: apiKey, api_paste_code: message, api_option: 'paste' });
+      const content = await formurlencoded({
+        api_dev_key: apiKey,
+        api_paste_code: message,
+        api_option: 'paste'
+      });
       const response = await fetch('https://pastebin.com/api/api_post.php', {
         method: 'POST',
         body: content,
