@@ -10,7 +10,8 @@
   "license": "ISC",
   "main": "lib",
   "devDependencies": {
-    "@types/node": "^20.1.0"
+    "@types/node": "^20.1.0",
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "lint": "tsc"
