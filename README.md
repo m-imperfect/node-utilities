@@ -81,6 +81,9 @@ let pastepinLoggger = Log.create(myPastepinWriter, multilineFormatter);
 pastepinLoggger("My random text to be sent.");
 ```
 
+## Save Error Module
+...
+
 ## String Module
 Deals with strings modifying.  
 example to load the module in commonjs:
