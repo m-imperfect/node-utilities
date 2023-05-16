@@ -19,7 +19,7 @@ args.following('-port');
 Deals with outputs printing either in console, in a file or anywhere else.  
 example to load the module in commonjs:
 ```js
-const Log = require('@m-imperfect/node-utilities/lib/log');
+const { log: Log } = require('@m-imperfect/node-utilities');
 ```
 
 ### Log Writer
@@ -28,57 +28,71 @@ example writer creator:
 ```js
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const formurlencoded = (...args) => import('form-urlencoded').then(({default: formurlencoded}) => formurlencoded(...args));
-function createPastepinWriter(apiKey, success, errorsHandler) {
-  return async function pastebinWriter(message) {
-    try {
-      const content = await formurlencoded({
-        api_dev_key: apiKey,
-        api_paste_code: message,
-        api_option: 'paste'
-      });
-      const response = await fetch('https://pastebin.com/api/api_post.php', {
-        method: 'POST',
-        body: content,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': content.length
-        }
-      });
-      let text = await response.text();
-      if (response.ok)
-        success?.(text);
-      else
-        errorsHandler?.(text);
-    } catch (err) {
-      errorsHandler?.(err);
-    }
+class PastepinWriter extends Log.WriterClass {
+  constructor(apiKey, success, errorsHandler) {
+    super(async (message) => {
+      try {
+        const content = await formurlencoded({
+          api_dev_key: this.apiKey,
+          api_paste_code: message,
+          api_option: 'paste'
+        });
+        const response = await fetch('https://pastebin.com/api/api_post.php', {
+          method: 'POST',
+          body: content,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': content.length
+          }
+        });
+        let text = await response.text();
+        if (response.ok)
+          success?.(text);
+        else
+          errorsHandler?.(text);
+      } catch (err) {
+        errorsHandler?.(err);
+      }
+    });
+
+    this.apiKey = apiKey;
   }
 }
 
-let myPastepinWriter = createPastepinWriter(
+let myPastepinWriter = new PastepinWriter(
   process.env["PASTEPIN_API_KEY"],
-  url => console.log("Logged a message to:" + url),
+  url => console.log("Logged a message to: " + url),
   console.error
 );
 ```
+
+### Built-in Log Writers
+...
 
 ### Log Formatter
 Function that takes the arguments and "merge" them into one string in a particular way.  
 example formatter:
 ```js
-function multilineFormatter(...args) {
+function multilineFormatter(...param) {
   return param.map(value => `${value}`).join('\n');
 }
 ```
+
+### Built-in Log Formatters
+...
 
 ### Logger
 Can be created by `Log.create` function that takes a writer and a formatter then return a "logger" function.  
 The logger takes arguments and format them with the formatter. After that, it sends the formatted arguments string to the writer.  
 example logger creation and usage:
 ```js
-let pastepinLoggger = Log.create(myPastepinWriter, multilineFormatter);
+let pastepinLogger = Log.create(myPastepinWriter, multilineFormatter);
 
-pastepinLoggger("My random text to be sent.");
+pastepinLogger(
+  "My text that will reach the writer.",
+  "Another parameter to test the formatter.",
+  "Should be uploaded."
+);
 ```
 
 ## Save Error Module
@@ -219,8 +233,12 @@ console.log(validation.isValid('', 'userID')) // false
 
 ## TODO
 - Accept function validators.
-- Complete [default validators](#Default-Validators).
-- Complete [file watcher](#File-Watcher).
+- Complete:
+  - [Built-in Log Writers](#Built-in-Log-Writers).
+  - [Built-in Log Formatters](#Built-in-Log-Formatters).
+  - [Save Error Module](#Save-Error-Module).
+  - [Default Validators](#Default-Validators).
+  - [File Watcher](#File-Watcher).
 
 ## Plans
 - Integer validator.

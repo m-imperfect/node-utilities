@@ -1,52 +1,77 @@
-import { existsSync, mkdirSync, writeFileSync, appendFileSync } from 'fs'
+import {
+  existsSync, mkdirSync,
+  writeFileSync, appendFileSync,
+  WriteFileOptions
+} from 'fs'
 import { dirname } from 'path'
 import { format } from 'util'
 
-type StringMap<value> = { [key: string]: value }
-type Method<outcome> = (...any: any[]) => outcome
-type Formatter = Method<string>
-type Writer = Method<any>
+type Writer = (...any: any[]) => any
+export function defaultWriter(message: string) { process.stdout.write(message + '\n') }
 
-export let writers: StringMap<Writer> = {
-  default: function createDefaultWriter() {
-    return function defaultWriter(message: string) {
-      process.stdout.write(message + '\n')
-    }
+export class WriterClass {
+  write: Writer
+  constructor(writer: Writer) {
+    this.write = writer
   }
 }
 
-writers.file = function createFileWriter(path: string, createDir = false, errorsHandler?: Function, options = { encoding: 'utf-8' }) {
-  return function fileWriter(message: string) {
-    try {
-      let directory = dirname(path)
-      if (!existsSync(directory) && createDir) mkdirSync(directory)
-      let write: Function = writeFileSync
-      if (existsSync(path)) write = appendFileSync
-      write(path, message + '\n', options)
-    } catch (error) {
-      errorsHandler?.(error)
-    }
+export class FileWriter extends WriterClass {
+  path: string
+  mkdir: boolean
+  options: WriteFileOptions
+  onError?: Function
+
+  constructor(path: string, mkdir = false, options?: WriteFileOptions, onError?: Function) {
+    super((message: string) => {
+      try {
+        let dir = dirname(this.path)
+        if (!existsSync(dir) && this.mkdir) mkdirSync(dir, { recursive: true })
+        let write: Function = writeFileSync
+        if (existsSync(this.path)) write = appendFileSync
+        write(this.path, message + '\n', this.options)
+      } catch (error) {
+        if (!this.onError) throw error
+        this.onError(message, error)
+      }
+    })
+    
+    this.path = path
+    this.mkdir = mkdir
+    if (!options) options = { encoding: 'utf-8' }
+    this.options = options
+    this.onError = onError
   }
 }
 
-export let formatters: StringMap<Formatter> = { default: format }
+type Formatter = (...any: any[]) => string;
+type BuiltInFormatter = 'default' | 'label' | 'time' | 'labeledTime'
+export let formatters: Record<BuiltInFormatter, Formatter> = {
+  default: format,
 
-formatters.label = function labelFormatter(label: string, ...param: any[]) {
-  return `[${label}] ${format(...param)}`
+  label: function labelFormatter(label: string, ...param: any[]) {
+    return `[${label}] ${format(...param)}`
+  },
+
+  time: function timeFormatter(...param: any[]) {
+    return `[${new Date().toISOString()}] ${format(...param)}`
+  },
+
+  labeledTime: function labeledTimeFormatter(label: string, ...param: any[]) {
+    return `[${new Date().toISOString()}][${label}] ${format(...param)}`
+  },
 }
 
-formatters.time = function timeFormatter(...param: any[]) {
-  return `[${new Date().toISOString()}] ${format(...param)}`
-}
-
-formatters.labeledTime = function labeledTimeFormatter(label: string, ...param: any[]) {
-  return `[${new Date().toISOString()}][${label}] ${format(...param)}`
-}
-
-export let create = function createLogger(writer?: Writer, formatter?: Formatter) {
-  let _writer = writer ? writer : writers.default
+export let create = function createLogger(writer?: Writer | WriterClass, formatter?: Formatter) {
   let _formatter = formatter ? formatter : formatters.default
-  return function logger(...args: any[]) {
-    return _writer(_formatter(...args))
+  if (writer instanceof WriterClass) {
+    return function logger(...args: any[]) {
+      return writer.write(_formatter(...args))
+    }  
+  } else {
+    let _writer = writer ? writer : defaultWriter
+    return function logger(...args: any[]) {
+      return _writer(_formatter(...args))
+    }
   }
 }
