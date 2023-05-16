@@ -97,6 +97,56 @@ console.log(ordered);
 console.log(string.reverse(ordered)); // fedcba
 ```
 
+## Random Module
+Deals with randomizing (numbers, strings, etc...).  
+example to load the module in commonjs:
+```js
+const { random } = require('@m-imperfect/node-utilities');
+```
+
+### Boolean Method
+Randomizes a boolean value `true`|`false`.  
+example of usage:
+```js
+if (random.boolean()) {
+  console.log("action1 as random is true")
+} else {
+  console.log("action2 as random is false")
+}
+```
+
+### Integer Method
+Randomizes an integer number in a given range [min, max].  
+Note: min and max is included in the range, so the returned value could be the min/max value.  
+example of usage:
+```js
+console.log(random.integer(0,9)); // could be 0 or 9 or any integer between them
+```
+
+### Decimals Method
+Same as `Math.random`, returns a pseudorandom number between 0 and 1.  
+Note: the returned number is never gonna be 0 or 1 but any number in between.  
+example of usage:
+```js
+console.log(random.decimals());
+```
+
+### String Method
+Randomizes a string using an array of characters.  
+
+parameters:  
+- **length**: number of characters in the string.
+- **characters**: the array of characters to be used in randomizing.
+- **unique**: whether should the string be a unique characters string.  
+  
+example of usage:
+```js
+console.log(random.string()); // ATzx1, B, jSdfqZ183
+console.log(random.string(5)); // mPLJF, ipf9Z, IistX
+console.log(random.string(7, 'ab12')); // abb2a1, aaaabb, 11221b
+console.log(random.string(6, 'abc123', true)); // b2ac31, a23c1b, c2b31a
+```
+
 ## Validation Module
 Deals with the values and their types.  
 example to load the module in commonjs:
