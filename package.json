@@ -8,7 +8,7 @@
     "url": "https://github.com/m-imperfect/node-utilities.git"
   },
   "license": "ISC",
-  "main": "lib",
+  "main": "lib/index.js",
   "devDependencies": {
     "@types/node": "^20.1.0",
     "typescript": "^5.0.4"
