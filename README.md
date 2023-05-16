@@ -168,76 +168,20 @@ console.log(random.string(6, 'abc123', true)); // b2ac31, a23c1b, c2b31a
 Deals with the values and their types.  
 example to load the module in commonjs:
 ```js
-const validation = require('@m-imperfect/node-utilities/lib/validation');
+const { validation } = require('@m-imperfect/node-utilities');
 ```
-
-### Validate Method
-Basically `validation.validate` check if the given value type is the same the the given type aka "validator".  
-if the value type is the same, the code continue, if not, an error is thrown.
-example of usage:
-```js
-let value1 = "Some random text.";
-let value2 = 'A';
-let value3 = '';
-try {
-  validation.validate(value1, 'text');
-  console.log("the value1 is a text");
-
-  validation.validate(value2, 'text');
-  console.log("the value2 is a text");
-
-  validation.validate(value3, 'text'); // expected to throw an error
-  console.log("the value3 is a text"); // won't be printed anyway
-} catch (err) {
-  console.error(err);
-}
-```
-
-### Is Valid Method
-The same concept as [validate method](#Validate-Method) except this method doesn't throw an error, but instead it returns a boolean value.  
-example of usage:
-```js
-let value1 = Math.sqrt(2)
-if (validation.isValid(value1, 'realNumber'))
-  console.log("value1 is a real number")
-else
-  console.log("value1 isn't a real number")
-
-let value2 = Math.sqrt(-1)
-if (validation.isValid(value2, 'realNumber'))
-  console.log("value2 is a real number")
-else
-  console.log("value2 isn't a real number")
-```
-
-### Define Validator Method
-Define a unique key to represent a custom validator.  
-example of usage:
-```js
-validation.define('userID', 'realNumber|text')
-
-console.log(validation.isValid('CA-4', 'userID')) // true
-console.log(validation.isValid(1034, 'userID')) // true
-console.log(validation.isValid('', 'userID')) // false
-```
-
-### Default Validators
-- JS [data structures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures).
-- **any**: any value is accepted.
-- **text**: any string that has one letter or more.
-- **realNumber**: all numbers except [NaN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
-- ...
+...
 
 ## File Watcher
 ...
 
 ## TODO
-- Accept function validators.
 - Complete:
   - [Built-in Log Writers](#Built-in-Log-Writers).
   - [Built-in Log Formatters](#Built-in-Log-Formatters).
   - [Save Error Module](#Save-Error-Module).
-  - [Default Validators](#Default-Validators).
+  - [Validation Module](#Validation-Module).
+  - [Validation Testing](https://github.com/m-imperfect/node-utilities/blob/master/test/validate.js).
   - [File Watcher](#File-Watcher).
 
 ## Plans
