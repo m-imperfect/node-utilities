@@ -81,6 +81,22 @@ let pastepinLoggger = Log.create(myPastepinWriter, multilineFormatter);
 pastepinLoggger("My random text to be sent.");
 ```
 
+## String Module
+Deals with strings modifying.  
+example to load the module in commonjs:
+```js
+const { string } = require('@m-imperfect/node-utilities');
+```
+
+### Reverse Method
+Reverses a string by making the first letter is the last one and vice versa.  
+example of usage:
+```js
+let value = 'abcdef';
+console.log(ordered);
+console.log(string.reverse(ordered)); // fedcba
+```
+
 ## Validation Module
 Deals with the values and their types.  
 example to load the module in commonjs:
