@@ -114,6 +114,16 @@ console.log(ordered);
 console.log(string.reverse(ordered)); // fedcba
 ```
 
+### Between Method
+Gives a piece of a string or replaces it.  
+example of usage:
+```js
+let value = 'John Example Doe';
+console.log("Original value:", value);
+console.log("Between 5,12:", string.between(value, 5,12)); // Example
+console.log("Between 5,12 replaced with \"son of\":", string.between(value, 5,12, "son of")); // John son of Doe
+```
+
 ## Random Module
 Deals with randomizing (numbers, strings, etc...).  
 example to load the module in commonjs:
