@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 Coming soon...
 
-## [1.2.0]
+## [1.2.0] - 2023-05-25
 
 ### Added
 - Strings Module.
