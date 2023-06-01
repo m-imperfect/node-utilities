@@ -1,3 +1,3 @@
-const { validation } = require('../lib');
+const { validation } = require('../');
 
 

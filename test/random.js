@@ -1,4 +1,4 @@
-const { random } = require('../lib');
+const { random } = require('../');
 
 console.log("Random boolean value:", random.boolean());
 

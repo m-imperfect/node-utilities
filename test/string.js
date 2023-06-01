@@ -1,4 +1,4 @@
-const { string } = require('../lib');
+const { string } = require('../');
 
 let ordered = 'abcdefghijkl';
 console.log("Original value:", ordered);

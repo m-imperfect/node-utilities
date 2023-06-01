@@ -1,5 +1,5 @@
 const path = require("path");
-const { log } = require("../lib");
+const { log } = require("../");
 const { FileWriter } = log;
 
 console.log = log.create(log.defaultWriter, log.formatters.label);
