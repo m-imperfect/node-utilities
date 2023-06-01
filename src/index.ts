@@ -2,8 +2,7 @@ export * as args from './args'
 
 export * as log from './log'
 
-import saveErrorModule from './save-error'
-export let saveError = saveErrorModule
+export * as errors from './errors'
 
 export * as string from './string'
 

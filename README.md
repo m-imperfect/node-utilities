@@ -95,8 +95,51 @@ pastepinLogger(
 );
 ```
 
-## Save Error Module
-...
+## Errors Module
+Deals with errors in general.  
+example to load the module in commonjs:
+```js
+const { errors } = require('@m-imperfect/node-utilities');
+``` 
+
+### Save Method
+Saves an error in a specific path.  
+parameters:  
+- **error**: any kind of errors, TypeError, SyntaxError, etc...
+- **key**: the key which error will be saved with, %s to will be replaced with a random string with 8 ASCII charset.
+- **title**: the title that will be in the head of the message in the file.
+- **dir**: a directory path to save the error file in.  
+example of usage:
+```js
+try {
+  throw new Error("Something went wrong in Y.");
+} catch (err) {
+  errors.save(err, 'Y-%s', "The example title.", 'Errors');
+  // the error is saved in ~/Errors/Y-D2Aq1eEC
+}
+```
+
+### Coded Error
+An error class with a code.  
+example of usage:
+```js
+const { CodedError } = errors;
+
+function mayCauseError() {
+  if (Math.random() > 0.5) throw new Error("Usual error.")
+}
+
+try {
+  mayCauseError();
+  throw new CodedError('MY_CODE', "Warning message that have a lot to say.")
+} catch (err) {
+  if (err.code == 'MY_CODE') {
+    console.log("Friendly warning message.");
+  } else {
+    console.error(err);
+  }
+}
+```
 
 ## String Module
 Deals with strings modifying.  
@@ -160,7 +203,6 @@ console.log(random.decimals());
 
 ### String Method
 Randomizes a string using an array of characters.  
-
 parameters:  
 - **length**: number of characters in the string.
 - **characters**: the array of characters to be used in randomizing.
@@ -189,7 +231,6 @@ const { validation } = require('@m-imperfect/node-utilities');
 - Complete:
   - [Built-in Log Writers](#Built-in-Log-Writers).
   - [Built-in Log Formatters](#Built-in-Log-Formatters).
-  - [Save Error Module](#Save-Error-Module).
   - [Validation Module](#Validation-Module).
   - [Validation Testing](https://github.com/m-imperfect/node-utilities/blob/master/test/validate.js).
   - [File Watcher](#File-Watcher).

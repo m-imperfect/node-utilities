@@ -6,11 +6,12 @@ import { FileWriter } from './log'
 /**
  * Saving an error in the errors' directory with a key
  * @param err Any kind of errors, TypeError, SyntaxError, etc...
- * @param key The key which error will be saved with, %s to will be replaced with a random string with 8 ASCII characters
+ * @param key The key which error will be saved with, %s to will be replaced with a random string with 8 ASCII charset
  * @param title The title that will be in the head of the message in the file
+ * @param dir a directory path to save the error file in
  * @returns The error code
  */
-function saveError(error: any, key?: string, title?: string, dir?: string): string | undefined {
+export function save(error: any, key?: string, title?: string, dir?: string): string | undefined {
   try {
     let errorCode = string(8)
     let fileName = (key)?format(key, errorCode):errorCode
@@ -33,4 +34,10 @@ function saveError(error: any, key?: string, title?: string, dir?: string): stri
   }
 }
 
-export = saveError
+export class CodedError extends Error {
+  code: string
+  constructor(code: string, message?: string | undefined) {
+    super(message)
+    this.code = code
+  }
+}
