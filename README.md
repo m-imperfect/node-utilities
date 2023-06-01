@@ -67,7 +67,19 @@ let myPastepinWriter = new PastepinWriter(
 ```
 
 ### Built-in Log Writers
-...
+Writers that are attached with the package.
+
+#### File Writer
+Writer that writes into a selected file path.  
+example file writer:
+```js
+let keysWriter = new Log.FileWriter('logs/keys.log', true, { encoding: 'base64' }, console.error);
+let keysLog = Log.create(keysWriter);
+
+keysLog('ABC-DEF');
+keysLog('FED-CBA');
+keysLog('XYZ-IJK');
+```
 
 ### Log Formatter
 Function that takes the arguments and "merge" them into one string in a particular way.  
@@ -79,7 +91,31 @@ function multilineFormatter(...param) {
 ```
 
 ### Built-in Log Formatters
-...
+Formatters that are attached with the package.
+
+#### Default Formatter
+Equivalent for `utils.format`.
+
+#### Label Formatter
+Labeling a message.  
+formatting example:
+```js
+Log.formatters.label('Dictionary', 'Globalization', 'is', 'a word') // [Dictionary] Globalization is a word
+```
+
+#### Time Formatter
+Labeling a message with ISO time string.  
+formatting example:
+```js
+Log.formatters.label('127.0.0.1', `(${200})`) // [YYYY-MM-DDTHH:mm:ss.SSSZ] 127.0.0.1 (200)
+```
+
+#### Labeled Time Formatter
+Labeling a message in addition to ISO time string.  
+formatting example:
+```js
+Log.formatters.label('API', 'POST /create', `success`) // [YYYY-MM-DDTHH:mm:ss.SSSZ][API] POST /create success
+```
 
 ### Logger
 Can be created by `Log.create` function that takes a writer and a formatter then return a "logger" function.  
@@ -225,15 +261,22 @@ const { validation } = require('@m-imperfect/node-utilities');
 ...
 
 ## File Watcher
-...
+Listening to any change that occurs to a specific file.  
+usage example:
+```js
+const { FileWatcher } = require('@m-imperfect/node-utilities');
+
+new FileWatcher('./logs/errors.log')
+.on('update', () => console.log('The file has been changed'))
+.on('warning', console.warn)
+.on('error', console.error)
+.watch();
+```
 
 ## TODO
 - Complete:
-  - [Built-in Log Writers](#Built-in-Log-Writers).
-  - [Built-in Log Formatters](#Built-in-Log-Formatters).
   - [Validation Module](#Validation-Module).
   - [Validation Testing](https://github.com/m-imperfect/node-utilities/blob/master/test/validate.js).
-  - [File Watcher](#File-Watcher).
 
 ## Plans
 - Integer validator.
