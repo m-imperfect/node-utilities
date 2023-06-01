@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 Coming soon...
 
-## [1.2.1] - 2023-06-00
+## [1.2.1] - 2023-06-01
 
 ### Changed
 - Save Error Module to be Errors Module.
