@@ -5,7 +5,7 @@ Some useful functions to use in [NodeJS](https://nodejs.org/).
 Deals with the executed command line that launched the application.  
 example to load the module in commonjs:
 ```js
-const args = require('@m-imperfect/node-utilities/lib/args');
+const { args } = require('@m-imperfect/node-utilities');
 ```
 
 ### Following Arg Method
@@ -14,6 +14,11 @@ example to use the method:
 ```js
 args.following('-port');
 ```
+in case the commands was:
+```
+node myapp.js -port 8081
+```
+the previous method would return `"8081"` as a value.
 
 ## Log Module
 Deals with outputs printing either in console, in a file or anywhere else.  
@@ -107,14 +112,15 @@ Log.formatters.label('Dictionary', 'Globalization', 'is', 'a word') // [Dictiona
 Labeling a message with ISO time string.  
 formatting example:
 ```js
-Log.formatters.label('127.0.0.1', `(${200})`) // [YYYY-MM-DDTHH:mm:ss.SSSZ] 127.0.0.1 (200)
+let status = 200; // just for the example
+Log.formatters.time('127.0.0.1', `(${status})`) // [YYYY-MM-DDTHH:mm:ss.SSSZ] 127.0.0.1 (200)
 ```
 
 #### Labeled Time Formatter
 Labeling a message in addition to ISO time string.  
 formatting example:
 ```js
-Log.formatters.label('API', 'POST /create', `success`) // [YYYY-MM-DDTHH:mm:ss.SSSZ][API] POST /create success
+Log.formatters.labeledTime('API', 'POST /create', `success`) // [YYYY-MM-DDTHH:mm:ss.SSSZ][API] POST /create success
 ```
 
 ### Logger
@@ -279,7 +285,5 @@ new FileWatcher('./logs/errors.log')
   - [Validation Testing](https://github.com/m-imperfect/node-utilities/blob/master/test/validate.js).
 
 ## Plans
-- Integer validator.
-- Decimal validator.
-- Positive/Negative validator.
-- validation operator `&` (similar to `|`).
+- watch file, wait for creation option.
+- save error, event instead of warning.
